@@ -2,26 +2,13 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class User extends Authenticatable
+class Category extends Model
 {
-    use Notifiable;
-
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'phone_no',
-        'balance',
-        'ext_account_id',
-        'photo'
-    ];
-
-    protected $hidden = [
-        'api_token',
+        'name'
     ];
 
     public function getCreatedAtAttribute($date)
