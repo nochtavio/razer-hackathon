@@ -123,7 +123,7 @@ class MambuEngine
         ];
     }
 
-    public function transferBalance($accountId, $amount, $type, $targetAccount = null)
+    public function transferBalance($accountId, $amount, $type)
     {
         switch ($type) {
             case 'deposit':
@@ -147,7 +147,7 @@ class MambuEngine
                     "notes"             => "Deposit into savings account",
                     "type"              => "TRANSFER",
                     "method"            => "bank",
-                    "toSavingsAccount"  => $targetAccount
+                    "toSavingsAccount"  => env("MAMBU_MAIN_SAVING_ACCOUNTS_ID")
                 ];
                 break;
 

@@ -124,7 +124,7 @@ class UserController extends Controller
 
         $loggedUser = Auth::user();
 
-        $transferBalace = $this->mambuEngine->transferBalance($loggedUser->ext_account_id, $input['amount'], $input['type'], @$input['target_account_id']);
+        $transferBalace = $this->mambuEngine->transferBalance($loggedUser->ext_account_id, $input['amount'], $input['type']);
 
         if(!$transferBalace['result']){
             return $this->sendError($transferBalace['message'], 422);
