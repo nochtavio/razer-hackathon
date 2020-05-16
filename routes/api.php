@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/users', 'UserController@store');
-Route::post('/users/verify', 'UserController@verify');
+Route::post('/users', 'UserController@store')->name('register');
+Route::post('/users/verify', 'UserController@verify')->name('login');
 
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('/users', 'UserController@show');

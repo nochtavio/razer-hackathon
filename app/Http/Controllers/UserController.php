@@ -93,7 +93,7 @@ class UserController extends Controller
         try {
             $target = Storage::putFile('', $request->file('photo'), 'public');
         } catch (\Throwable $th) {
-            $this->sendError("Issue on uploading photo", 422);
+            return $this->sendError("Issue on uploading photo", 422);
         }
         // End Store Photo to S3
 
