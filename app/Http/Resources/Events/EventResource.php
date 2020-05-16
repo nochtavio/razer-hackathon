@@ -16,6 +16,7 @@ class EventResource extends JsonResource
             'price'         => $this->price,
             'experience'    => $this->experience,
             'label'         => $this->label,
+            'cashback'      => $this->cashback,
             'located_at'    => $this->located_at,
             'open_at'       => (string)$this->open_at,
             'closed_at'     => (string)$this->closed_at,

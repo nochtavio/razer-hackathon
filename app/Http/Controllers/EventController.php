@@ -36,4 +36,11 @@ class EventController extends Controller
 
         return $this->sendResponse($collection->values()->all(), 'Events retrieved sucessfully');
     }
+
+    public function show($id)
+    {
+        $event = Event::find($id);
+
+        return $this->sendResponse(new EventResource($event), 'Event is successfully retrieved');
+    }
 }
