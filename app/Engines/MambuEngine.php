@@ -45,8 +45,8 @@ class MambuEngine
                                 ]
                             ]
                         ]);
-        dd($createClient);
-        if($createClient['status_code'] != 200){
+
+        if($createClient['status_code'] != 201){
             return [
                 "result"    => false,
                 "message"   => 'Registering Mambu client is failed. Errors : ' . json_encode(@$createClient['body']->message)
@@ -55,7 +55,48 @@ class MambuEngine
 
         return [
             "result"    => true,
-            "message"   => "Mambu client is successfully created"
+            "message"   => "Mambu client is successfully created",
+            "data"      => $createClient['body']
+        ];
+    }
+
+    public function createClientAccount($clientId)
+    {
+        $createAccount  = callMambu([
+                            'method'    => 'POST',
+                            'url'       => '/api/savings',
+                            'json'      => [
+                                "savingsAccount"=> [
+                                    "name"              => "Digital Account",
+                                    "accountHolderType" => "CLIENT",
+                                    "accountHolderKey"  => $clientId,
+                                    "accountState"      => "APPROVED",
+                                    "productTypeKey"    => "8a8e878471bf59cf0171bf6979700440",
+                                    "accountType"       => "CURRENT_ACCOUNT",
+                                    "currencyCode"      => "SGD",
+                                    "allowOverdraft"    => "true",
+                                    "overdraftLimit"    => "100",
+                                    "overdraftInterestSettings"=> [
+                                        "interestRate"=> 5
+                                    ],
+                                    "interestSettings"=> [
+                                        "interestRate"=> "1.25"
+                                    ]
+                                ]
+                            ]
+                        ]);
+
+        if($createAccount['status_code'] != 201){
+            return [
+                "result"    => false,
+                "message"   => 'Registering Mambu account is failed. Errors : ' . json_encode(@$createAccount['body']->message)
+            ];
+        }
+
+        return [
+            "result"    => true,
+            "message"   => "Mambu account is successfully created",
+            "data"      => $createAccount['body']
         ];
     }
 }
