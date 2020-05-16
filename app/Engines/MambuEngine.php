@@ -128,7 +128,7 @@ class MambuEngine
         switch ($type) {
             case 'deposit':
                 $postData = [
-                    "amount"            => $amount,
+                    "amount"            => (string)$amount,
                     "notes"             => "Deposit into savings account",
                     "type"              => "DEPOSIT",
                     "method"            => "bank",
@@ -143,7 +143,7 @@ class MambuEngine
 
             case 'transfer':
                 $postData = [
-                    "amount"            => $amount,
+                    "amount"            => (string)$amount,
                     "notes"             => "Deposit into savings account",
                     "type"              => "TRANSFER",
                     "method"            => "bank",
