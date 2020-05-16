@@ -14,9 +14,10 @@ use App\UserPayment;
 use App\Http\Requests\Events\BuyEvent;
 
 use App\Http\Resources\Events\EventResource;
+use App\Http\Resources\UserCategories\UserCategoryResource;
 
 use App\Engines\MambuEngine;
-
+use App\UserCategory;
 use Carbon\Carbon;
 use DB;
 
@@ -85,6 +86,11 @@ class EventController extends Controller
                             'status'        => 'paid'
                         ]);
 
-        return $this->sendResponse(new EventResource($event), 'Event is successfully purchased');
+        $userCategory   = UserCategory::where([
+                            'user_id'       => $loggedUser->id,
+                            'category_id'   => $event->category_id
+                        ])->first();
+
+        return $this->sendResponse(new UserCategoryResource($userCategory), 'Event is successfully purchased');
     }
 }
