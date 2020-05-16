@@ -14,6 +14,7 @@ class Event extends Model
         'price',
         'experience',
         'label',
+        'cashback',
         'located_at',
         'open_at',
         'closed_at'
@@ -33,17 +34,8 @@ class Event extends Model
         }
     }
 
-    public function getLocatedAtAttribute($date)
+    public function category()
     {
-        if($date){
-            return Carbon::createFromFormat('Y-m-d H:i:s', $date)->setTimezone('GMT+8');
-        }
-    }
-
-    public function getOpenAtAttribute($date)
-    {
-        if($date){
-            return Carbon::createFromFormat('Y-m-d H:i:s', $date)->setTimezone('GMT+8');
-        }
+        return $this->belongsTo('App\Category');
     }
 }
