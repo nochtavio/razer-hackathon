@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 use App\User;
 
 use App\Http\Requests\Users\StoreUser;
 use App\Http\Requests\Users\VerifyUser;
+use App\Http\Requests\Users\TransferBalance;
 
 use App\Http\Resources\Users\UserResource;
 use App\Http\Resources\Users\AuthResource;
@@ -107,5 +109,27 @@ class UserController extends Controller
         $user->save();
 
         return $this->sendResponse(new AuthResource($user), 'User is verified');
+    }
+
+    public function show(Request $request)
+    {
+        $loggedUser = Auth::user();
+
+        return $this->sendResponse(new UserResource($loggedUser), 'User is successfully retrieved');
+    }
+
+    public function transfer(TransferBalance $request)
+    {
+        $input      = $request->all();
+
+        $loggedUser = Auth::user();
+
+        $transferBalace = $this->mambuEngine->transferBalance($loggedUser->ext_account_id, $input['amount'], $input['type'], @$input['target_account_id']);
+
+        if(!$transferBalace['result']){
+            return $this->sendError($transferBalace['message'], 422);
+        }
+
+        return $this->sendResponse(new UserResource($loggedUser), 'Transfer is successfully done');
     }
 }

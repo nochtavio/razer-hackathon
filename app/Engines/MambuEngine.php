@@ -2,6 +2,8 @@
 
 namespace App\Engines;
 
+use Illuminate\Support\Str;
+
 use DB;
 use Log;
 
@@ -97,6 +99,84 @@ class MambuEngine
             "result"    => true,
             "message"   => "Mambu account is successfully created",
             "data"      => $createAccount['body']
+        ];
+    }
+
+    public function getAccountSaving($accountId)
+    {
+        $accountSaving  = callMambu([
+                            'method'    => 'GET',
+                            'url'       => '/api/savings/' . $accountId
+                        ]);
+
+        if($accountSaving['status_code'] != 200){
+            return [
+                "result"    => false,
+                "message"   => 'Get account is failed. Errors : ' . json_encode(@$accountSaving['body']->message)
+            ];
+        }
+
+        return [
+            "result"    => true,
+            "message"   => "Mambu account is successfully retrieved",
+            "data"      => $accountSaving['body']
+        ];
+    }
+
+    public function transferBalance($accountId, $amount, $type, $targetAccount = null)
+    {
+        switch ($type) {
+            case 'deposit':
+                $postData = [
+                    "amount"            => $amount,
+                    "notes"             => "Deposit into savings account",
+                    "type"              => "DEPOSIT",
+                    "method"            => "bank",
+                    "customInformation" => [
+                        [
+                            "value"         => Str::random(60),
+                            "customFieldID" => "IDENTIFIER_TRANSACTION_CHANNEL_I"
+                        ]
+                    ]
+                ];
+                break;
+
+            case 'transfer':
+                $postData = [
+                    "amount"            => $amount,
+                    "notes"             => "Deposit into savings account",
+                    "type"              => "TRANSFER",
+                    "method"            => "bank",
+                    "toSavingsAccount"  => $targetAccount
+                ];
+                break;
+
+            default:
+                return [
+                    "result"    => false,
+                    "message"   => 'Unknown transfer type'
+                ];
+
+                break;
+        }
+
+        $transferBalance    = callMambu([
+                                'method'    => 'POST',
+                                'url'       => '/api/savings/' . $accountId . '/transactions',
+                                'json'      => $postData
+                            ]);
+
+        if($transferBalance['status_code'] != 201){
+            return [
+                "result"    => false,
+                "message"   => 'Issue on transfer balance. Errors : ' . json_encode(@$transferBalance['body']->message)
+            ];
+        }
+
+        return [
+            "result"    => true,
+            "message"   => "Transfer balance is successfull",
+            "data"      => $transferBalance['body']
         ];
     }
 }
