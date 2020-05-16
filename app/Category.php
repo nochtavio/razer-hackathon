@@ -24,4 +24,9 @@ class Category extends Model
             return Carbon::createFromFormat('Y-m-d H:i:s', $date)->setTimezone('GMT+8');
         }
     }
+
+    public function userCategories()
+    {
+        return $this->hasMany('App\UserCategory');
+    }
 }

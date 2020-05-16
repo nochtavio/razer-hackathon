@@ -13,6 +13,7 @@ class Event extends Model
         'address',
         'price',
         'experience',
+        'label',
         'located_at',
         'open_at',
         'closed_at'

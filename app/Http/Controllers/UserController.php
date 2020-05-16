@@ -15,6 +15,7 @@ use App\Http\Requests\Users\TransferBalance;
 
 use App\Http\Resources\Users\UserResource;
 use App\Http\Resources\Users\AuthResource;
+use App\Http\Resources\Users\UserWithCategoriesResource;
 
 use App\Engines\MambuEngine;
 use App\Engines\AwsEngine;
@@ -131,5 +132,12 @@ class UserController extends Controller
         }
 
         return $this->sendResponse(new UserResource($loggedUser), 'Transfer is successfully done');
+    }
+
+    public function showCategories()
+    {
+        $loggedUser = Auth::user();
+
+        return $this->sendResponse(new UserWithCategoriesResource($loggedUser), 'User is successfully retrieved');
     }
 }
