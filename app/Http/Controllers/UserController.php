@@ -109,6 +109,8 @@ class UserController extends Controller
         $user->api_token = Str::random(60);
         $user->save();
 
+        Storage::disk('s3')->delete($target);
+
         return $this->sendResponse(new AuthResource($user), 'User is verified');
     }
 
