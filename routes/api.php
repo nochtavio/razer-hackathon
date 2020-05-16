@@ -8,3 +8,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/users', 'UserController@store');
+Route::post('/users/verify', 'UserController@verify');

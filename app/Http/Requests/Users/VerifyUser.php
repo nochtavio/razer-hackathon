@@ -4,7 +4,7 @@ namespace App\Http\Requests\Users;
 
 use App\Http\Requests\BaseAPIRequest as FormRequest;
 
-class StoreUser extends FormRequest
+class VerifyUser extends FormRequest
 {
     public function authorize()
     {
@@ -14,9 +14,8 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'first_name'    => ['required'],
-            'last_name'     => ['required'],
-            'phone_no'      => ['required', 'unique:users,phone_no']
+            'phone_no'  => ['required', 'exists:users,phone_no'],
+            'photo'     => ['required']
         ];
     }
 }
