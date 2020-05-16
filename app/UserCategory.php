@@ -11,7 +11,8 @@ class UserCategory extends Model
         'user_id',
         'category_id',
         'level',
-        'experience'
+        'experience',
+        'total_experience'
     ];
 
     public function getCreatedAtAttribute($date)

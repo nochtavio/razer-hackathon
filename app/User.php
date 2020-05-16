@@ -51,10 +51,11 @@ class User extends Authenticatable
             $insertVals = [];
             foreach ($categories as $key => $category) {
                 $insertVals[] = [
-                    'user_id'       => $user->id,
-                    'category_id'   => $category->id,
-                    'level'         => 1,
-                    'experience'    => 0
+                    'user_id'           => $user->id,
+                    'category_id'       => $category->id,
+                    'level'             => 1,
+                    'experience'        => 0,
+                    'total_experience'  => 0
                 ];
             }
 

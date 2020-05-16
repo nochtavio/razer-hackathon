@@ -25,10 +25,11 @@ class UserWithCategoriesResource extends JsonResource
             'updated_at'        => (string)$this->updated_at,
             'categories'        => $this->userCategories->transform(function ($userCategory) {
                 return [
-                    'category_id'   => $userCategory->category->id,
-                    'name'          => $userCategory->category->name,
-                    'level'         => $userCategory->level,
-                    'experience'    => $userCategory->experience
+                    'category_id'       => $userCategory->category->id,
+                    'name'              => $userCategory->category->name,
+                    'level'             => $userCategory->level,
+                    'experience'        => $userCategory->experience,
+                    'total_experience'  => $userCategory->total_experience
                 ];
             }),
         ];
