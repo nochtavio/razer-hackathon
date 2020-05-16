@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Engines;
+
+use DB;
+use Log;
+
+class MambuEngine
+{
+    private $branchKey;
+
+    public function __construct()
+    {
+        $this->branchKey = env('MAMBU_BRANCH_KEY', null);
+    }
+
+    public function createClient($firstName, $lastName)
+    {
+        if($this->branchKey == null){
+            return [
+                "result"    => false,
+                "message"   => "MAMBU BRANCH KEY is missing"
+            ];
+        }
+
+        $createClient   = callMambu([
+                            'method'    => 'POST',
+                            'url'       => '/api/clients',
+                            'json'      => [
+                                'client' => [
+                                    "firstName"         => $firstName,
+                                    "lastName"          => $lastName,
+                                    "preferredLanguage" => "ENGLISH",
+                                    "notes"             => "",
+                                    "assignedBranchKey" => $this->branchKey
+                                ],
+                                "idDocuments" => [
+                                    [
+                                        "identificationDocumentTemplateKey" => "8a8e867271bd280c0171bf7e4ec71b01",
+                                        "issuingAuthority"                  => "Immigration Authority of Singapore",
+                                        "documentType"                      => "NRIC/Passport Number",
+                                        "validUntil"                        => "2021-09-12",
+                                        "documentId"                        => "S9812345A"
+                                    ]
+                                ]
+                            ]
+                        ]);
+        dd($createClient);
+        if($createClient['status_code'] != 200){
+            return [
+                "result"    => false,
+                "message"   => 'Registering Mambu client is failed. Errors : ' . json_encode(@$createClient['body']->message)
+            ];
+        }
+
+        return [
+            "result"    => true,
+            "message"   => "Mambu client is successfully created"
+        ];
+    }
+}
